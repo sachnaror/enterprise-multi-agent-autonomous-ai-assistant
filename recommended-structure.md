@@ -1,3 +1,5 @@
+
+```
 ai_assistant/
 │
 ├── app/
@@ -289,3 +291,4 @@ ai_assistant/
 ├── pyproject.toml                               # Python tooling/dependency config
 ├── requirements.txt                             # Python dependencies
 └── Makefile                                     # Developer automation commands
+```
