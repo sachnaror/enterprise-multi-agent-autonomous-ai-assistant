@@ -58,6 +58,18 @@ ai_assistant/
 │   │   ├── coordination_agent.py                # Coordinates multi-agent communication
 │   │   └── tool_selector_agent.py               # Dynamically selects tools
 │   │
+│   ├── architecture/
+│   │   ├── architecture_analyzer.py             # Detects architectural limitations
+│   │   ├── gap_detector.py                      # Detects missing capabilities
+│   │   ├── scalability_analyzer.py              # Detects scalability bottlenecks
+│   │   ├── dependency_analyzer.py               # Detects dependency issues
+│   │   ├── module_recommender.py                # Suggests new folders/modules
+│   │   ├── structure_optimizer.py               # Suggests structure improvements
+│   │   ├── redundancy_detector.py               # Detects duplicate systems
+│   │   ├── architectural_smells.py              # Detects bad architecture patterns
+│   │   ├── migration_planner.py                 # Plans safe architecture migrations
+│   │   └── architecture_memory.py               # Stores historical architecture decisions
+│   │
 │   ├── memory/
 │   │   ├── session_manager.py                   # Handles user-session lifecycle
 │   │   ├── session_store.py                     # Redis-backed short-term sessions
@@ -388,10 +400,17 @@ ai_assistant/
 │   │
 │   ├── approval/
 │   │   ├── diff_reviewer.py                     # Reviews generated diffs
+│   │   ├── approval_modes.py                    # Defines autonomy modes
 │   │   ├── approval_queue.py                    # Human approval workflow queue
 │   │   ├── human_gate.py                        # Requires human intervention when risky
+│   │   ├── auto_approval_policy.py              # Auto-approved safe operations
 │   │   ├── risk_assessor.py                     # Scores execution risk
+│   │   ├── risk_thresholds.py                   # Risk thresholds
+│   │   ├── permission_manager.py                # Controls execution permissions
+│   │   ├── approval_memory.py                   # Stores approval history
 │   │   ├── safe_execution.py                    # Executes only approved actions
+│   │   ├── execution_guard.py                   # Blocks unauthorized mutations
+│   │   ├── architectural_guardrails.py          # Prevents dangerous changes
 │   │   └── approval_policies.py                 # Defines approval policies
 │   │
 │   ├── evaluation/
@@ -569,6 +588,24 @@ ai_assistant/
 │   │   ├── dependency_graph.py                  # Code dependency graph
 │   │   └── architecture_graph.py                # System architecture relationship graph
 │   │
+│   ├── proposal/
+│   │   ├── proposal_generator.py                # Generates architecture proposals
+│   │   ├── impact_report.py                     # Explains impact of changes
+│   │   ├── risk_report.py                       # Explains architectural risks
+│   │   ├── dependency_report.py                 # Shows dependency impact
+│   │   ├── migration_report.py                  # Explains migration steps
+│   │   ├── cost_estimator.py                    # Estimates complexity/cost
+│   │   ├── proposal_ranker.py                   # Prioritizes proposed improvements
+│   │   └── proposal_history.py                  # Stores proposal history
+│   │
+│   ├── risk/
+│   │   ├── architectural_risk.py                # Architecture risk scoring
+│   │   ├── execution_risk.py                    # Runtime risk scoring
+│   │   ├── security_risk.py                     # Security-impact analysis
+│   │   ├── migration_risk.py                    # Migration-risk analysis
+│   │   ├── confidence_risk_mapper.py            # Maps confidence to risk
+│   │   └── blast_radius_estimator.py            # Estimates change impact
+│   │
 │   ├── model_intelligence/
 │   │   ├── model_profiler.py                    # Benchmarks model performance
 │   │   ├── capability_router.py                 # Routes by model strengths
@@ -622,6 +659,10 @@ ai_assistant/
 ├── storage/                                     # Persistent storage layer
 ├── infrastructure/                              # Infrastructure and deployment configuration
 ├── knowledge/                                   # Long-term organizational knowledge
+│   └── decisions/                               # Architecture Decision Records (ADR)
+│       ├── ADR-014-add-queue-layer.md           # Decision record for queue introduction
+│       ├── ADR-015-add-checkpoint-recovery.md   # Decision record for recovery architecture
+│       └── ADR-016-switch-to-qdrant.md          # Decision record for vector database choice
 ├── tests/                                       # Automated tests and evaluations
 ├── scripts/                                     # DevOps and operational scripts
 ├── .claude/                                     # Claude-specific commands/rules
