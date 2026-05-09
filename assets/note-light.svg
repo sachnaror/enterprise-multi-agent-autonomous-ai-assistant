@@ -4,16 +4,16 @@
   <circle cx="56" cy="52" r="20" fill="#8B4513"/>
   <text x="48" y="59" fill="#FFF8F1" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">!</text>
   <text x="92" y="60" fill="#8B4513" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Note</text>
-  <text x="40" y="104" fill="#5C3317" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+  <text x="40" y="104" fill="#5C3317" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
     This is a scalable reference architecture, not something every project must fully implement.
   </text>
-  <text x="40" y="136" fill="#A0522D" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+  <text x="40" y="138" fill="#A0522D" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
     Choose only the modules relevant to your application's size, complexity, and use case,
   </text>
-  <text x="40" y="168" fill="#7A3E1D" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+  <text x="40" y="172" fill="#7A3E1D" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
     and expand incrementally as requirements grow.
   </text>
-  <text x="40" y="208" fill="#5C3317" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+  <text x="40" y="214" fill="#5C3317" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
     Understand each folder, layer, and system before adding it. Do not follow this structure blindly unless there is a real architectural need.
   </text>
 </svg>
