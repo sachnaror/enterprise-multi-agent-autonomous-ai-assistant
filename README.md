@@ -1,10 +1,8 @@
 
-<div style="font-size: 18px; font-weight: 700;">
-  <p><strong>Note:</strong></p>
-  <p><strong>This is a scalable reference architecture, not something every project must fully implement. Choose only the modules relevant to your application's size, complexity, and use case, and expand incrementally as requirements grow.</strong></p>
-  <p><strong>Understand what each folder, layer, and system actually does before adding it, and do not blindly follow this structure unless there is a real architectural need for it.</strong></p>
-</div>
-
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/note-dark.svg">
+  <img src="assets/note-light.svg" alt="Important note about using this reference architecture incrementally and only when architecturally justified." width="980">
+</picture>
 
 # Enterprise Autonomous Coding Agent Platform
 
