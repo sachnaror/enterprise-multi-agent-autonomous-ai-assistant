@@ -3,6 +3,74 @@
   <img src="assets/note-light.svg" alt="Important note about using this reference architecture incrementally and only when architecturally justified." width="980">
 </picture>
 
+## Guidance
+
+### RAG vs Fine-Tuning
+
+- Use `RAG` when the model needs changing knowledge:
+  - internal documents
+  - SOPs
+  - PDFs
+  - incidents
+  - database-backed context
+- Use `fine-tuning` when the model needs changing behavior:
+  - company tone
+  - coding style
+  - response structure
+  - domain-specific reasoning patterns
+- In most enterprise systems:
+  - `RAG` is the first choice for knowledge
+  - `fine-tuning` is the second choice for behavior
+  - both can be used together when needed
+
+### Local Models vs API Models
+
+- Use `local models` when you need:
+  - stronger privacy
+  - lower marginal inference cost
+  - offline or self-hosted execution
+  - tighter infrastructure control
+- Use `API models` when you need:
+  - best available frontier quality
+  - fast iteration without managing serving infrastructure
+  - access to specialized models for frontend, backend, or general reasoning
+- A practical enterprise setup usually supports both:
+  - local/self-hosted models for baseline and private workloads
+  - API models for premium routing, fallback, and specialized tasks
+
+### Autonomy Modes and Architecture Changes
+
+- `READ_ONLY`
+  - analyze only
+  - no structural mutation
+- `SUGGEST_ONLY`
+  - generate recommendations and proposals
+  - no direct execution
+- `SAFE_AUTO`
+  - auto-apply low-risk changes only
+  - still blocked by guardrails and risk thresholds
+- `SUPERVISED`
+  - can analyze, plan, and propose
+  - must ask before structural changes, deletions, migrations, or risky execution
+- `FULL_AUTO`
+  - autonomous execution is allowed
+  - still constrained by governance, approval rules, and hard safety guardrails
+
+### Model Switching Policy
+
+- The application should route models by:
+  - task type
+  - domain strength
+  - latency
+  - cost
+  - safety
+  - provider health
+- Typical routing examples:
+  - frontend tasks -> stronger UI/code-generation model
+  - backend tasks -> stronger architecture/backend model
+  - general-purpose tasks -> balanced general model
+- Routing decisions should be policy-driven, observable, and reversible.
+
 
 
 ```text
@@ -38,6 +106,25 @@ ai_assistant/
 │   │   ├── reflection_prompt.md                 # Self-reflection and critique prompt
 │   │   ├── reviewer_prompt.md                   # Code-review and validation prompt
 │   │   └── planning_prompt.md                   # DAG planning and execution prompt
+│   │
+│   ├── llm/
+│   │   ├── inference_gateway.py                 # Unified gateway for all model calls
+│   │   ├── provider_registry.py                 # Registers local and remote providers
+│   │   ├── response_normalizer.py               # Normalizes outputs across providers
+│   │   ├── prompt_adapter.py                    # Adapts prompts per provider/model
+│   │   ├── adapter_loader.py                    # Loads LoRA/QLoRA adapters at runtime
+│   │   ├── fallback_router.py                   # Fallback path on provider/model failure
+│   │   ├── streaming_bridge.py                  # Unified token streaming adapter
+│   │   └── providers/
+│   │       ├── openai_provider.py               # OpenAI API integration
+│   │       ├── anthropic_provider.py            # Anthropic API integration
+│   │       ├── google_provider.py               # Gemini/Google API integration
+│   │       ├── openrouter_provider.py           # OpenRouter aggregation layer
+│   │       ├── groq_provider.py                 # Groq API integration
+│   │       ├── together_provider.py             # Together AI integration
+│   │       ├── huggingface_provider.py          # Hugging Face inference integration
+│   │       ├── vllm_provider.py                 # Local/self-hosted vLLM integration
+│   │       └── llama_cpp_provider.py            # Local llama.cpp integration
 │   │
 │   ├── agents/
 │   │   ├── orchestrator.py                      # Routes tasks across specialized agents
@@ -608,17 +695,50 @@ ai_assistant/
 │   │
 │   ├── model_intelligence/
 │   │   ├── model_profiler.py                    # Benchmarks model performance
+│   │   ├── model_registry.py                    # Central registry of approved models
+│   │   ├── capability_matrix.py                 # Maps models to strengths/use-cases
+│   │   ├── task_classifier.py                   # Classifies frontend/backend/general tasks
+│   │   ├── domain_router.py                     # Routes by domain or workload type
+│   │   ├── routing_policy_loader.py             # Loads model-routing policies
 │   │   ├── capability_router.py                 # Routes by model strengths
 │   │   ├── latency_optimizer.py                 # Optimizes latency
 │   │   ├── quality_router.py                    # Routes by output quality
+│   │   ├── frontend_model_selector.py           # Picks strongest model for frontend work
+│   │   ├── backend_model_selector.py            # Picks strongest model for backend work
+│   │   ├── general_model_selector.py            # Picks strongest model for general tasks
 │   │   ├── local_model_selector.py              # Chooses local GGUF models
 │   │   ├── quantization_manager.py              # Handles quantized models
 │   │   ├── context_optimizer.py                 # Optimizes model context
 │   │   ├── fallback_chains.py                   # Multi-model fallback chains
 │   │   ├── provider_selector.py                 # Selects optimal provider
+│   │   ├── benchmark_registry.py                # Stores benchmark references by task type
+│   │   ├── routing_evaluator.py                 # Evaluates routing decisions over time
+│   │   ├── provider_health_monitor.py           # Tracks provider health and uptime
+│   │   ├── model_policy_enforcer.py             # Enforces approved model usage policies
+│   │   ├── model_version_manager.py             # Tracks versions and rollouts
 │   │   ├── token_optimizer.py                   # Optimizes token usage
 │   │   ├── model_health_monitor.py              # Tracks model health/status
 │   │   └── inference_metrics.py                 # Tracks inference analytics
+│   │
+│   ├── fine_tuning/
+│   │   ├── base_model_registry.py               # Approved base models for tuning
+│   │   ├── dataset_loader.py                    # Loads JSONL/JSON/CSV/Parquet datasets
+│   │   ├── dataset_validator.py                 # Validates training/eval dataset quality
+│   │   ├── dataset_versioning.py                # Tracks dataset versions and lineage
+│   │   ├── instruction_formatter.py             # Converts raw data into instruction format
+│   │   ├── tokenizer_builder.py                 # Prepares tokenizer/runtime config
+│   │   ├── lora_configurator.py                 # Builds LoRA training config
+│   │   ├── qlora_configurator.py                # Builds QLoRA training config
+│   │   ├── trainer.py                           # Orchestrates model training jobs
+│   │   ├── distributed_trainer.py               # Multi-GPU/distributed fine-tuning
+│   │   ├── checkpoint_exporter.py               # Saves adapters/checkpoints
+│   │   ├── adapter_registry.py                  # Registers produced adapters
+│   │   ├── adapter_merger.py                    # Merges adapters when required
+│   │   ├── serving_packager.py                  # Packages tuned model for deployment
+│   │   ├── evaluation_runner.py                 # Runs post-training evaluation suite
+│   │   ├── hyperparameter_store.py              # Stores epochs, LR, batch size, rank
+│   │   ├── finetune_policy.py                   # Rules for when tuning is allowed
+│   │   └── training_audit.py                    # Audit trail for all training jobs
 │   │
 │   ├── multimodal/
 │   │   ├── whisper_engine.py                    # Speech-to-text integration
@@ -658,6 +778,52 @@ ai_assistant/
 │
 ├── storage/                                     # Persistent storage layer
 ├── infrastructure/                              # Infrastructure and deployment configuration
+├── requirements/                                # Product, engineering, and execution requirements
+│   ├── product/
+│   │   ├── PRD.md                               # Product requirements document
+│   │   ├── use_cases.md                         # Primary user and workflow use-cases
+│   │   └── acceptance_criteria.md               # Acceptance criteria by feature
+│   ├── engineering/
+│   │   ├── architecture_requirements.md         # Core architecture requirements
+│   │   ├── non_functional_requirements.md       # Scale, latency, reliability, cost
+│   │   ├── model_requirements.md                # Model-switching and inference needs
+│   │   └── security_requirements.md             # Security and compliance requirements
+│   └── agents/
+│       ├── autonomy_modes.md                    # READ_ONLY, SUGGEST_ONLY, SAFE_AUTO, etc.
+│       ├── approval_matrix.md                   # Which actions require approval
+│       └── evaluation_requirements.md           # How agents should be evaluated
+├── policies/                                    # Human-readable and machine-readable policy documents
+│   ├── autonomy_modes.yaml                      # Global autonomy mode definitions
+│   ├── approval_policies.yaml                   # Approval requirements by action type
+│   ├── risk_thresholds.yaml                     # Thresholds for low/medium/high risk
+│   ├── model_routing_policies.yaml              # Which models to use for which domains
+│   ├── security_guardrails.yaml                 # Restricted actions and security rules
+│   ├── data_retention_policies.yaml             # Data retention and archival rules
+│   ├── fine_tuning_policies.yaml                # Rules around training/tuning models
+│   └── deployment_policies.yaml                 # Release and rollout guardrails
+├── datasets/                                    # Training, evaluation, and retrieval corpora
+│   ├── training/
+│   │   ├── instructions.jsonl                   # Instruction/response fine-tuning data
+│   │   ├── coding_examples.jsonl                # Code-focused tuning examples
+│   │   └── domain_examples.parquet              # Domain-specific fine-tuning corpus
+│   ├── evaluation/
+│   │   ├── frontend_eval.jsonl                  # Frontend capability evaluation set
+│   │   ├── backend_eval.jsonl                   # Backend capability evaluation set
+│   │   ├── general_eval.jsonl                   # General-purpose evaluation set
+│   │   └── safety_eval.jsonl                    # Safety/guardrail evaluation set
+│   ├── rag_sources/
+│   │   ├── docs/                                # Knowledge-base documents for RAG
+│   │   ├── incidents/                           # Incident reports and retrospectives
+│   │   └── sop/                                 # SOPs and internal process docs
+│   └── labeling/
+│       ├── annotation_guidelines.md             # Human labeling instructions
+│       └── preference_pairs.jsonl               # Preference-tuning examples
+├── artifacts/                                   # Generated model and training artifacts
+│   ├── adapters/                                # LoRA/QLoRA adapters
+│   ├── checkpoints/                             # Training checkpoints
+│   ├── exports/                                 # Exported merged model bundles
+│   ├── benchmarks/                              # Saved benchmark runs and reports
+│   └── reports/                                 # Evaluation and tuning reports
 ├── knowledge/                                   # Long-term organizational knowledge
 │   └── decisions/                               # Architecture Decision Records (ADR)
 │       ├── ADR-014-add-queue-layer.md           # Decision record for queue introduction
