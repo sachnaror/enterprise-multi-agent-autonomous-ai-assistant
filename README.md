@@ -6,9 +6,8 @@
 
 # Enterprise Autonomous Coding Agent Platform
 
-A production-style multi-agent AI coding assistant built using:
+A production-style multi-agent AI coding assistant reference architecture built around:
 
-- FastAPI
 - Local + Cloud LLMs
 - RAG
 - Persistent Memory
@@ -120,3 +119,20 @@ User → FastAPI → Orchestrator → Memory/RAG/Planning → Tools/Agents → L
 - GraphRAG
 
 ---
+
+
+
+
+## 📩 Contact
+
+| Name              | Details                             |
+|-------------------|-------------------------------------|
+| **👨‍💻 Developer**  | Sachin Arora                      |
+| **📧 Email**      | [sachnaror@gmail.com](mailto:sacinaror@gmail.com) |
+| **📍 Location**   | Noida, India                       |
+| **📂 GitHub**     | [Link](https://github.com/sachnaror) |
+| **🌐 Youtube**    | [Link](https://www.youtube.com/@sachnaror4841/videos) |
+| **🌐 Blog**       | [Link](https://medium.com/@schnaror) |
+| **🌐 Website**    | [Link](https://about.me/sachin-arora) |
+| **🌐 Twitter**    | [Link](https://twitter.com/sachinhep) |
+| **📱 Phone**      | [+91 9560330483](tel:+919560330483) |
